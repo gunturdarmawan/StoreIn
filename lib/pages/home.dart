@@ -40,7 +40,6 @@ class _HomePageState extends State<HomePage> {
     getProducts();
     getCategories();
     scrollController.addListener(loadMoreData);
-    _getLatestProducts();
   }
 
   @override
@@ -408,32 +407,12 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> _getLatestProducts() async {
-    try {
-      final response = await dio.get('https://dummyjson.com/products');
-
-      final List<dynamic> data = response.data["products"];
-      List<Product> latestProducts = data.map((p) => Product.fromJson(p)).toList();
-
-      setState(() {
-        products = latestProducts;
-      });
-    } catch (e) {
-      print('Error fetching latest products: $e');
-    }
-  }
-
   void _navigateToAddProductPage() {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const AddDataPage()),
-    ).then((value) {
-      if (value == true) {
-        _getLatestProducts();
-      }
-    });
+    );
   }
-
 
 }
 
